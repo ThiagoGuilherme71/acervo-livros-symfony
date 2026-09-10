@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editar livro{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_livro_index') }}">Livros</a></li>
+            <li class="breadcrumb-item active">Editar livro</li>
+        </ol>
+    </nav>
+
+    <h2 class="mb-4">Editar livro</h2>
+
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="row g-3 mb-3">
+                    <div class="col-md-8">
+                        {{ form_label(form.titulo) }}
+                        {{ form_widget(form.titulo, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.titulo) }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form_label(form.valor) }}
+                        {{ form_widget(form.valor, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.valor) }}
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        {{ form_label(form.editora) }}
+                        {{ form_widget(form.editora, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.editora) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.edicao) }}
+                        {{ form_widget(form.edicao, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.edicao) }}
+                    </div>
+                    <div class="col-md-3">
+                        {{ form_label(form.anoPublicacao) }}
+                        {{ form_widget(form.anoPublicacao, {attr: {class: 'form-control'}}) }}
+                        {{ form_errors(form.anoPublicacao) }}
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-6">
+                        {{ form_label(form.autores) }}
+                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                            {% for autorCheckbox in form.autores %}
+                                <div class="form-check">
+                                    {{ form_widget(autorCheckbox, {attr: {class: 'form-check-input'}}) }}
+                                    {{ form_label(autorCheckbox, null, {label_attr: {class: 'form-check-label'}}) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(form.autores) }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form_label(form.assuntos) }}
+                        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+                            {% for assuntoCheckbox in form.assuntos %}
+                                <div class="form-check">
+                                    {{ form_widget(assuntoCheckbox, {attr: {class: 'form-check-input'}}) }}
+                                    {{ form_label(assuntoCheckbox, null, {label_attr: {class: 'form-check-label'}}) }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        {{ form_errors(form.assuntos) }}
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-lg"></i> Salvar alterações
+                    </button>
+                    <a href="{{ path('app_livro_index') }}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const campoValor = document.querySelector('#{{ form.valor.vars.id }}');
+
+    campoValor.addEventListener('input', function (event) {
+        let valor = event.target.value;
+        valor = valor.replace(/\./g, ',');
+        valor = valor.replace(/[^0-9,]/g, '');
+
+        const partes = valor.split(',');
+        if (partes.length > 2) {
+            valor = partes[0] + ',' + partes.slice(1).join('');
+        }
+
+        event.target.value = valor;
+    });
+});
+</script>
+{% endblock %}
