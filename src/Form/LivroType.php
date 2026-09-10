@@ -44,7 +44,14 @@ class LivroType extends AbstractType
                 ],
             ])
             ->add('anoPublicacao', TextType::class, [
-                'label' => 'Ano de Publicação',
+                'label' => 'Ano de Publicação (xxxx)',
+                'attr' => [
+                    'inputmode' => 'numeric',
+                    'pattern' => '[0-9]{4}',
+                    'maxlength' => 4,
+                    'min' => 1000,
+                    'max' => (int) date('Y'),
+                ],
                 'constraints' => [
                     new NotBlank(message: 'O ano de publicação é obrigatório.'),
                     new Regex(pattern: '/^\d{4}$/', message: 'Informe um ano válido com 4 dígitos.'),
