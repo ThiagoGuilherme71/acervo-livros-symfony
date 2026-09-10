@@ -122,11 +122,11 @@ Alternativa para quem j√° tem o ambiente PHP configurado localmente e prefere n√
 
 6. Suba o servidor:
    ```bash
-   symfony server:start
+   symfony server:start --port=8089
    ```
    Ou, sem o Symfony CLI:
    ```bash
-   php -S 127.0.0.1:8000 -t public
+   php -S 127.0.0.1:8009 -t public
    ```
 
 7. Acesse no navegador:
