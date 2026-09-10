@@ -28,14 +28,6 @@ label.required::after {
     --bs-table-hover-bg: rgba(74, 124, 89, 0.06);
 }
 
-.bootstrap-table .fixed-table-toolbar {
-    padding: 0.75rem 1rem 0.25rem;
-}
-
-.bootstrap-table .fixed-table-toolbar .search {
-    max-width: 300px;
-}
-
 .bootstrap-table .fixed-table-pagination {
     margin: 0;
     padding: 0.5rem 1rem;
@@ -68,8 +60,7 @@ label.required::after {
 }
 
 .filter-control .form-control-sm:focus,
-.filter-control .form-select-sm:focus,
-.fixed-table-toolbar .search-input:focus {
+.filter-control .form-select-sm:focus {
     border-color: #4a7c59;
     box-shadow: 0 0 0 0.2rem rgba(74, 124, 89, 0.15);
 }
