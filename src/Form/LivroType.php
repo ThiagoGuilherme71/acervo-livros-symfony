@@ -51,7 +51,7 @@ class LivroType extends AbstractType
                 ],
             ])
             ->add('valor', MoneyType::class, [
-                'label' => 'Valor (R$)',
+                'label' => 'Valor',
                 'currency' => 'BRL',
                 'constraints' => [
                     new NotBlank(message: 'O valor é obrigatório.'),
@@ -62,6 +62,7 @@ class LivroType extends AbstractType
                 'class' => Autor::class,
                 'choice_label' => 'nome',
                 'multiple' => true,
+                'expanded' => true,
                 'label' => 'Autor(es)',
                 'constraints' => [
                     new NotBlank(message: 'Selecione ao menos um autor.'),
@@ -71,6 +72,7 @@ class LivroType extends AbstractType
                 'class' => Assunto::class,
                 'choice_label' => 'descricao',
                 'multiple' => true,
+                'expanded' => true,
                 'required' => false,
                 'label' => 'Assunto(s)',
             ])
