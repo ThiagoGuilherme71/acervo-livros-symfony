@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Livros{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Livros</h2>
+        <a href="{{ path('app_livro_new') }}" class="btn btn-success">
+            <i class="bi bi-plus-lg"></i> Novo livro
+        </a>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table
+                class="table table-hover align-middle mb-0"
+                data-toggle="table"
+                data-pagination="true"
+                data-page-size="10"
+                data-filter-control="true"
+                data-icon-size="sm"
+                data-buttons-class="outline-secondary"
+            >
+                <thead class="table-light">
+                    <tr>
+                        <th data-field="id" data-sortable="true" data-width="90">Cód.</th>
+                        <th data-field="titulo" data-sortable="true" data-filter-control="input" data-filter-control-placeholder="Filtrar título">Título</th>
+                        <th data-field="editora" data-sortable="true" data-filter-control="select" data-filter-control-placeholder="Todas">Editora</th>
+                        <th data-field="edicao" data-width="80">Ed.</th>
+                        <th data-field="ano" data-sortable="true" data-filter-control="select" data-filter-control-placeholder="Todos" data-width="120">Ano</th>
+                        <th data-field="autores" data-filter-control="input" data-filter-control-placeholder="Filtrar autor" data-filter-custom-search="filtrarTexto">Autores</th>
+                        <th data-field="assuntos" data-filter-control="input" data-filter-control-placeholder="Filtrar assunto" data-filter-custom-search="filtrarTexto">Assuntos</th>
+                        <th data-field="valor" class="text-end" data-width="120">Valor</th>
+                        <th data-field="acoes" class="text-end" data-width="110">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for livro in livros %}
+                        <tr>
+                            <td class="text-muted">{{ livro.id }}</td>
+                            <td class="fw-semibold">{{ livro.titulo }}</td>
+                            <td>{{ livro.editora }}</td>
+                            <td>{{ livro.edicao }}ª</td>
+                            <td>{{ livro.anoPublicacao }}</td>
+                            <td>
+                                {% for autor in livro.autores %}
+                                    <span class="badge bg-success-subtle text-success-emphasis">{{ autor.nome }}</span>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for assunto in livro.assuntos %}
+                                    <span class="badge bg-success-subtle text-success-emphasis">{{ assunto.descricao }}</span>
+                                {% else %}
+                                    <span class="text-muted small">-</span>
+                                {% endfor %}
+                            </td>
+                            <td class="text-end fw-semibold">R$ {{ livro.valor|number_format(2, ',', '.') }}</td>
+                            <td class="text-end">
+                                <a href="{{ path('app_livro_edit', {id: livro.id}) }}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <form action="{{ path('app_livro_delete', {id: livro.id}) }}" method="post" class="d-inline" onsubmit="return confirm('Deseja realmente excluir este livro?');">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete-livro-' ~ livro.id) }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

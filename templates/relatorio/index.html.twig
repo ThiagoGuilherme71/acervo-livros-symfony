@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Relatório{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="mb-1">Relatório</h2>
+            <p class="text-muted mb-0">Livros agrupados por autor</p>
+        </div>
+        <a href="{{ path('app_relatorio_pdf') }}" target="_blank" class="btn btn-success">
+            <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+        </a>
+    </div>
+
+    {% for autorId, autor in agrupadoPorAutor %}
+        <div class="card mb-3">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">{{ autor.nome }}</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Título</th>
+                            <th>Editora</th>
+                            <th>Ed.</th>
+                            <th>Ano</th>
+                            <th>Assuntos</th>
+                            <th class="text-end">Valor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for livro in autor.livros %}
+                            <tr>
+                                <td class="fw-semibold">{{ livro.titulo }}</td>
+                                <td>{{ livro.editora }}</td>
+                                <td>{{ livro.edicao }}ª</td>
+                                <td>{{ livro.anoPublicacao }}</td>
+                                <td>
+                                    {% for assunto in livro.assuntos %}
+                                        <span class="badge bg-success-subtle text-success-emphasis">{{ assunto }}</span>
+                                    {% else %}
+                                        <span class="text-muted small">-</span>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-end">R$ {{ livro.valor|number_format(2, ',', '.') }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning">nenhum dado disponível para o relatório.</div>
+    {% endfor %}
+{% endblock %}

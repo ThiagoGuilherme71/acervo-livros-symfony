@@ -1,0 +1,80 @@
+body {
+    background-color: #f4f7f4;
+}
+
+.sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background-color: #4a7c59;
+}
+
+.sidebar .nav-link.active {
+    background-color: #ffffff;
+    color: #4a7c59 !important;
+    font-weight: 600;
+}
+
+.sidebar .nav-link:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+label.required::after {
+    content: " *";
+    color: #dc3545;
+}
+/* ---------- Tabelas (bootstrap-table) ---------- */
+
+.card .bootstrap-table {
+    --bs-table-hover-bg: rgba(74, 124, 89, 0.06);
+}
+
+.bootstrap-table .fixed-table-pagination {
+    margin: 0;
+    padding: 0.5rem 1rem;
+    border-top: 1px solid #e9ecef;
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+
+.card .table > thead > tr > th {
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #6c757d;
+    vertical-align: top;
+    white-space: nowrap;
+}
+
+.filter-control {
+    margin-top: 0.45rem;
+    letter-spacing: normal;
+    text-transform: none;
+}
+
+.filter-control .form-control-sm,
+.filter-control .form-select-sm {
+    background-color: #fbfcfb;
+}
+
+.filter-control .form-control-sm:focus,
+.filter-control .form-select-sm:focus {
+    border-color: #4a7c59;
+    box-shadow: 0 0 0 0.2rem rgba(74, 124, 89, 0.15);
+}
+
+.card .table > tbody > tr > td {
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+}
+
+.card .table .badge {
+    font-weight: 500;
+    margin: 0.1rem 0.1rem 0.1rem 0;
+}
+
+.card .table td form.d-inline {
+    margin-left: 0.25rem;
+}
