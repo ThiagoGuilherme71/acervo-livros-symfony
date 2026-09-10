@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: sans-serif; font-size: 12px; color: #333; }
+        h1 { font-size: 18px; color: #4a7c59; }
+        h2 { font-size: 14px; background-color: #f4f7f4; padding: 6px; margin-top: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 10px; }
+        th, td { border: 1px solid #ddd; padding: 6px; text-align: left; }
+        th { background-color: #f4f7f4; }
+        .text-end { text-align: right; }
+    </style>
+</head>
+<body>
+    <h1>Relatório de Acervo — Livros por Autor</h1>
+
+    {% for autorId, autor in agrupadoPorAutor %}
+        <h2>{{ autor.nome }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Editora</th>
+                    <th>Ed.</th>
+                    <th>Ano</th>
+                    <th>Assuntos</th>
+                    <th class="text-end">Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for livro in autor.livros %}
+                    <tr>
+                        <td>{{ livro.titulo }}</td>
+                        <td>{{ livro.editora }}</td>
+                        <td>{{ livro.edicao }}ª</td>
+                        <td>{{ livro.anoPublicacao }}</td>
+                        <td>{{ livro.assuntos|join(', ') }}</td>
+                        <td class="text-end">R$ {{ livro.valor|number_format(2, ',', '.') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+</body>
+</html>
