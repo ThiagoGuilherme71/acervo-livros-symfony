@@ -43,7 +43,9 @@
                     </a>
                 </li>
                 <li class="nav-item">
-          
+                    <a href="{{ path('app_relatorio_index') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_relatorio' ? 'active' : 'text-white' }}">
+                        <i class="bi bi-bar-chart me-2"></i> Relatório
+                    </a>
                 </li>
             </ul>
         </nav>
