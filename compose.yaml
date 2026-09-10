@@ -31,7 +31,7 @@ services:
   nginx:
     image: nginx:alpine
     ports:
-      - "8088:80"
+      - "8089:80"
     volumes:
       - ./:/var/www/html
       - vendor_data:/var/www/html/vendor
