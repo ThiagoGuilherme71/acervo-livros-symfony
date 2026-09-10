@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Novo autor{% endblock %}
+
+{% block body %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('app_autor_index') }}">Autores</a></li>
+            <li class="breadcrumb-item active">Novo autor</li>
+        </ol>
+    </nav>
+
+    <h2 class="mb-4">Novo autor</h2>
+
+    <div class="card">
+        <div class="card-body">
+            {{ form_start(form) }}
+                <div class="mb-3">
+                    {{ form_label(form.nome) }}
+                    {{ form_widget(form.nome, {attr: {class: 'form-control'}}) }}
+                    {{ form_errors(form.nome) }}
+                </div>
+
+                <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-check-lg"></i> Salvar
+                    </button>
+                    <a href="{{ path('app_autor_index') }}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
