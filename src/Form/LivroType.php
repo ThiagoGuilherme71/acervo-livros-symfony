@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Range;
 
 class LivroType extends AbstractType
 {
@@ -42,6 +43,10 @@ class LivroType extends AbstractType
                 'constraints' => [
                     new NotBlank(message: 'A edição é obrigatória.'),
                     new Positive(message: 'A edição deve ser um número positivo.'),
+                    new Range(
+                        max: 2147483647,
+                        maxMessage: 'A edição não pode ser maior que {{ limit }}.'
+                    ),
                 ],
             ])
             ->add('anoPublicacao', TextType::class, [
@@ -50,12 +55,15 @@ class LivroType extends AbstractType
                     'inputmode' => 'numeric',
                     'pattern' => '[0-9]{4}',
                     'maxlength' => 4,
-                    'min' => 1000,
-                    'max' => (int) date('Y'),
                 ],
                 'constraints' => [
                     new NotBlank(message: 'O ano de publicação é obrigatório.'),
                     new Regex(pattern: '/^\d{4}$/', message: 'Informe um ano válido com 4 dígitos.'),
+                    new Range(
+                        min: 1000,
+                        max: (int) date('Y'),
+                        notInRangeMessage: 'O ano deve estar entre {{ min }} e {{ max }}.'
+                    ),
                 ],
             ])
             ->add('valor', MoneyType::class, [
@@ -64,6 +72,10 @@ class LivroType extends AbstractType
                 'constraints' => [
                     new NotBlank(message: 'O valor é obrigatório.'),
                     new Positive(message: 'O valor deve ser maior que zero.'),
+                    new Range(
+                        max: 99999999.99,
+                        maxMessage: 'O valor não pode ser maior que {{ limit }}.'
+                    ),
                 ],
             ])
             ->add('autores', EntityType::class, [
