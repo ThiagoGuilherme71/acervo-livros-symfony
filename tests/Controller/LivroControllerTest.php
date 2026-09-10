@@ -37,7 +37,7 @@ class LivroControllerTest extends WebTestCase
 
         $this->client->submit($form);
 
-        $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('.alert-danger', 'pelo menos um autor');
+        $this->assertResponseStatusCodeSame(422);
+        $this->assertSelectorTextContains('body', 'Selecione ao menos um autor');
     }
 }
