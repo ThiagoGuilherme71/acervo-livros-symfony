@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\Regex;
+use Symfony\Component\Validator\Constraints\Count;
 
 class LivroType extends AbstractType
 {
@@ -72,7 +73,7 @@ class LivroType extends AbstractType
                 'expanded' => true,
                 'label' => 'Autor(es)',
                 'constraints' => [
-                    new NotBlank(message: 'Selecione ao menos um autor.'),
+                    new Count(min: 1, minMessage: 'Selecione ao menos um autor.'),
                 ],
             ])
             ->add('assuntos', EntityType::class, [
