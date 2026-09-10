@@ -56,7 +56,7 @@ Essa é a forma mais simples: basta ter o **Docker** e o **Docker Compose** inst
 
 3. Acesse a aplicação no navegador:
    ```
-   http://localhost:8088
+   http://localhost:8089
    ```
 
 ### Comandos úteis
