@@ -12,7 +12,7 @@ class Assunto
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'codas')]
     private ?int $id = null;
 
     #[ORM\Column(length: 20)]

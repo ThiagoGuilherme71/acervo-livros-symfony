@@ -12,7 +12,7 @@ class Autor
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(name: 'codau')]
     private ?int $id = null;
 
     #[ORM\Column(length: 40)]
