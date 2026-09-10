@@ -17,21 +17,14 @@ class HomeController extends AbstractController
         LivroRepository $livroRepository,
         AutorRepository $autorRepository,
         AssuntoRepository $assuntoRepository,
-        EntityManagerInterface $entityManager,
     ): Response {
-        $livros = $livroRepository->findAll();
-
-        $valorTotal = array_reduce(
-            $livros,
-            fn (float $total, $livro) => $total + (float) $livro->getValor(),
-            0.0
-        );
+        $resumoLivros = $livroRepository->contarEValorTotal();
 
         return $this->render('home/index.html.twig', [
-            'totalLivros' => count($livros),
-            'totalAutores' => count($autorRepository->findAll()),
-            'totalAssuntos' => count($assuntoRepository->findAll()),
-            'valorTotal' => $valorTotal,
+            'totalLivros' => $resumoLivros['total'],
+            'totalAutores' => $autorRepository->count([]),
+            'totalAssuntos' => $assuntoRepository->count([]),
+            'valorTotal' => $resumoLivros['valorTotal'],
         ]);
     }
 }

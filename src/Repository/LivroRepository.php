@@ -40,4 +40,17 @@ class LivroRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+     public function contarEValorTotal(): array
+    {
+        $resultado = $this->createQueryBuilder('l')
+            ->select('COUNT(l.id) as total, COALESCE(SUM(l.valor), 0) as valorTotal')
+            ->getQuery()
+            ->getSingleResult();
+
+        return [
+            'total' => (int) $resultado['total'],
+            'valorTotal' => (float) $resultado['valorTotal'],
+        ];
+    }
 }
