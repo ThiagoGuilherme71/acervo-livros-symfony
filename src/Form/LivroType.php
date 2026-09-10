@@ -44,7 +44,7 @@ class LivroType extends AbstractType
                 ],
             ])
             ->add('anoPublicacao', TextType::class, [
-                'label' => 'Ano de Publicação (xxxx)',
+                'label' => 'Ano de Publicação (yyyy)',
                 'attr' => [
                     'inputmode' => 'numeric',
                     'pattern' => '[0-9]{4}',
