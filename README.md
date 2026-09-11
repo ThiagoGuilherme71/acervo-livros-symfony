@@ -83,6 +83,16 @@ A aplicação fica disponível em `http://127.0.0.1:8089`.
 
 ## Testes
 
+### Via Docker
+
+O container já cria e migra o banco de teste automaticamente ao iniciar. Basta rodar:
+
+```bash
+docker compose exec app php bin/phpunit
+```
+
+### Via servidor local
+
 ```bash
 php bin/phpunit                    # todos os testes
 php bin/phpunit tests/Service      # unitários

@@ -3,6 +3,7 @@ FROM php:8.2-fpm-alpine
 RUN apk add --no-cache \
     postgresql-dev \
     icu-dev \
+    icu-data-full \
     libzip-dev \
     git \
     unzip
