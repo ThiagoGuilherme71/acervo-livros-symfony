@@ -7,6 +7,7 @@ use App\Exception\AutorDuplicadoException;
 use App\Exception\AutorPossuiLivroVinculadoException;
 use App\Repository\AutorRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AutorService
 {
@@ -24,7 +25,12 @@ class AutorService
         $autor->setNome($nome);
 
         $this->entityManager->persist($autor);
-        $this->entityManager->flush();
+
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            throw new AutorDuplicadoException($nome);
+        }
 
         return $autor;
     }
@@ -34,7 +40,12 @@ class AutorService
         $this->garantirNomeUnico($nome, $autor);
 
         $autor->setNome($nome);
-        $this->entityManager->flush();
+
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            throw new AutorDuplicadoException($nome);
+        }
 
         return $autor;
     }

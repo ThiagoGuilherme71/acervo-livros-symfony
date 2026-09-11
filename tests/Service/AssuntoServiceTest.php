@@ -10,6 +10,7 @@ use App\Repository\AssuntoRepository;
 use App\Service\AssuntoService;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AssuntoServiceTest extends TestCase
 {
@@ -116,5 +117,20 @@ class AssuntoServiceTest extends TestCase
         $this->expectException(AssuntoPossuiLivroVinculadoException::class);
 
         $this->assuntoService->excluir($assunto);
+    }
+
+    public function testCriarComViolacaoDeUnicidadeNoBancoDeveLancarExcecaoDeDominio(): void
+    {
+        $this->assuntoRepository
+            ->method('findOneBy')
+            ->willReturn(null);
+
+        $this->entityManager
+            ->method('flush')
+            ->willThrowException($this->createStub(UniqueConstraintViolationException::class));
+
+        $this->expectException(AssuntoDuplicadoException::class);
+
+        $this->assuntoService->criar('Ficção');
     }
 }

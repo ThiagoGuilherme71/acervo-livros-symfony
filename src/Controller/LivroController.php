@@ -37,16 +37,8 @@ class LivroController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-                try {
-                $this->livroService->criar(
-                    $livro->getTitulo(),
-                    $livro->getEditora(),
-                    $livro->getEdicao(),
-                    $livro->getAnoPublicacao(),
-                    $livro->getValor(),
-                    $livro->getAutores()->toArray(),
-                    $livro->getAssuntos()->toArray()
-                );
+            try {
+                $this->livroService->criar($livro);
 
                 $this->addFlash('success', 'Livro cadastrado com sucesso.');
 
@@ -69,16 +61,7 @@ class LivroController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->livroService->atualizar(
-                    $livro,
-                    $livro->getTitulo(),
-                    $livro->getEditora(),
-                    $livro->getEdicao(),
-                    $livro->getAnoPublicacao(),
-                    $livro->getValor(),
-                    $livro->getAutores()->toArray(),
-                    $livro->getAssuntos()->toArray()
-                );
+                $this->livroService->atualizar($livro);
 
                 $this->addFlash('success', 'Livro atualizado com sucesso.');
 

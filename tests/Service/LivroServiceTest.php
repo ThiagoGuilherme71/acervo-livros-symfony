@@ -22,172 +22,112 @@ class LivroServiceTest extends TestCase
         $this->livroService = new LivroService($this->entityManager);
     }
 
-    public function testCriarComDadosValidosDevePersistirERetornarLivro(): void
+    private function criarLivroValido(): Livro
     {
         $autor = new Autor();
         $autor->setNome('Machado de Assis');
 
-        $this->entityManager->expects($this->once())->method('persist');
+        $livro = new Livro();
+        $livro->setTitulo('Dom Casmurro');
+        $livro->setEditora('Editora X');
+        $livro->setEdicao(1);
+        $livro->setAnoPublicacao('1899');
+        $livro->setValor('39.90');
+        $livro->addAutor($autor);
+
+        return $livro;
+    }
+
+    public function testCriarComDadosValidosDevePersistir(): void
+    {
+        $livro = $this->criarLivroValido();
+
+        $this->entityManager->expects($this->once())->method('persist')->with($livro);
         $this->entityManager->expects($this->once())->method('flush');
 
-        $livro = $this->livroService->criar(
-            'Dom Casmurro',
-            'Editora X',
-            1,
-            '1899',
-            '39.90',
-            [$autor]
-        );
+        $resultado = $this->livroService->criar($livro);
 
-        $this->assertSame('Dom Casmurro', $livro->getTitulo());
-        $this->assertTrue($livro->getAutores()->contains($autor));
+        $this->assertSame($livro, $resultado);
     }
 
     public function testCriarSemAutorDeveLancarExcecao(): void
     {
+        $livro = $this->criarLivroValido();
+        $livro->removeAutor($livro->getAutores()->first());
+
         $this->entityManager->expects($this->never())->method('persist');
 
         $this->expectException(LivroSemAutorException::class);
 
-        $this->livroService->criar(
-            'Dom Casmurro',
-            'Editora X',
-            1,
-            '1899',
-            '39.90',
-            []
-        );
+        $this->livroService->criar($livro);
     }
 
     public function testCriarComValorZeroDeveLancarExcecao(): void
     {
-        $autor = new Autor();
+        $livro = $this->criarLivroValido();
+        $livro->setValor('0');
 
         $this->entityManager->expects($this->never())->method('persist');
 
         $this->expectException(LivroValorInvalidoException::class);
 
-        $this->livroService->criar(
-            'Dom Casmurro',
-            'Editora X',
-            1,
-            '1899',
-            '0',
-            [$autor]
-        );
+        $this->livroService->criar($livro);
     }
 
     public function testCriarComValorNegativoDeveLancarExcecao(): void
     {
-        $autor = new Autor();
+        $livro = $this->criarLivroValido();
+        $livro->setValor('-10.00');
 
         $this->expectException(LivroValorInvalidoException::class);
 
-        $this->livroService->criar(
-            'Dom Casmurro',
-            'Editora X',
-            1,
-            '1899',
-            '-10.00',
-            [$autor]
-        );
+        $this->livroService->criar($livro);
     }
 
-    public function testAtualizarDeveSincronizarAutoresRemovendoOsNaoSelecionados(): void
+    public function testAtualizarComDadosValidosDeveDarFlush(): void
     {
-        $autorAntigo = new Autor();
-        $autorAntigo->setNome('Autor Antigo');
-
-        $autorNovo = new Autor();
-        $autorNovo->setNome('Autor Novo');
-
-        $livro = new Livro();
-        $livro->setTitulo('Título Original');
-        $livro->addAutor($autorAntigo);
+        $livro = $this->criarLivroValido();
 
         $this->entityManager->expects($this->once())->method('flush');
+        $this->entityManager->expects($this->never())->method('persist');
 
-        $this->livroService->atualizar(
-            $livro,
-            'Título Atualizado',
-            'Editora X',
-            1,
-            '2020',
-            '50.00',
-            [$autorNovo]
-        );
+        $resultado = $this->livroService->atualizar($livro);
 
-        $this->assertFalse($livro->getAutores()->contains($autorAntigo));
-        $this->assertTrue($livro->getAutores()->contains($autorNovo));
-    }
-
-    public function testAtualizarMantendoMesmoAutorNaoDeveDuplicarNemRemover(): void
-    {
-        $autor = new Autor();
-        $autor->setNome('Machado de Assis');
-
-        $livro = new Livro();
-        $livro->addAutor($autor);
-
-        $this->livroService->atualizar(
-            $livro,
-            'Novo Título',
-            'Editora X',
-            1,
-            '2020',
-            '50.00',
-            [$autor]
-        );
-
-        $this->assertCount(1, $livro->getAutores());
-        $this->assertTrue($livro->getAutores()->contains($autor));
+        $this->assertSame($livro, $resultado);
     }
 
     public function testAtualizarSemAutorDeveLancarExcecao(): void
     {
-        $autor = new Autor();
-        $livro = new Livro();
-        $livro->addAutor($autor);
+        $livro = $this->criarLivroValido();
+        $livro->removeAutor($livro->getAutores()->first());
 
         $this->expectException(LivroSemAutorException::class);
 
-        $this->livroService->atualizar(
-            $livro,
-            'Novo Título',
-            'Editora X',
-            1,
-            '2020',
-            '50.00',
-            []
-        );
+        $this->livroService->atualizar($livro);
     }
 
-    public function testCriarComAssuntosDeveVincularTodos(): void
+    public function testCriarComAssuntosDeveManterTodos(): void
     {
-        $autor = new Autor();
+        $livro = $this->criarLivroValido();
+
         $assunto1 = new Assunto();
         $assunto1->setDescricao('Ficção');
         $assunto2 = new Assunto();
         $assunto2->setDescricao('Romance');
 
-        $livro = $this->livroService->criar(
-            'Dom Casmurro',
-            'Editora X',
-            1,
-            '1899',
-            '39.90',
-            [$autor],
-            [$assunto1, $assunto2]
-        );
+        $livro->addAssunto($assunto1);
+        $livro->addAssunto($assunto2);
 
-        $this->assertCount(2, $livro->getAssuntos());
+        $resultado = $this->livroService->criar($livro);
+
+        $this->assertCount(2, $resultado->getAssuntos());
     }
 
     public function testExcluirDeveRemoverLivro(): void
     {
-        $livro = new Livro();
+        $livro = $this->criarLivroValido();
 
-        $this->entityManager->expects($this->once())->method('remove');
+        $this->entityManager->expects($this->once())->method('remove')->with($livro);
         $this->entityManager->expects($this->once())->method('flush');
 
         $this->livroService->excluir($livro);

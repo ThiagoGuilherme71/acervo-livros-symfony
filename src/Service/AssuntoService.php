@@ -7,6 +7,7 @@ use App\Exception\AssuntoDuplicadoException;
 use App\Exception\AssuntoPossuiLivroVinculadoException;
 use App\Repository\AssuntoRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AssuntoService
 {
@@ -24,7 +25,12 @@ class AssuntoService
         $assunto->setDescricao($descricao);
 
         $this->entityManager->persist($assunto);
-        $this->entityManager->flush();
+
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            throw new AssuntoDuplicadoException($descricao);
+        }
 
         return $assunto;
     }
@@ -34,7 +40,12 @@ class AssuntoService
         $this->garantirDescricaoUnica($descricao, $assunto);
 
         $assunto->setDescricao($descricao);
-        $this->entityManager->flush();
+
+        try {
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $e) {
+            throw new AssuntoDuplicadoException($descricao);
+        }
 
         return $assunto;
     }

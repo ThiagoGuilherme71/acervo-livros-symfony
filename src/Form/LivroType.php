@@ -69,6 +69,7 @@ class LivroType extends AbstractType
             ->add('valor', MoneyType::class, [
                 'label' => 'Valor',
                 'currency' => 'BRL',
+                'grouping' => true,
                 'constraints' => [
                     new NotBlank(message: 'O valor é obrigatório.'),
                     new Positive(message: 'O valor deve ser maior que zero.'),

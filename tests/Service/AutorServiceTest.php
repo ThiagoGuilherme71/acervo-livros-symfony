@@ -11,6 +11,7 @@ use App\Service\AutorService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class AutorServiceTest extends TestCase
 {
@@ -117,5 +118,20 @@ class AutorServiceTest extends TestCase
         $this->expectException(AutorPossuiLivroVinculadoException::class);
 
         $this->autorService->excluir($autor);
+    }
+
+    public function testCriarComViolacaoDeUnicidadeNoBancoDeveLancarExcecaoDeDominio(): void
+    {
+        $this->autorRepository
+            ->method('findOneBy')
+            ->willReturn(null);
+
+        $this->entityManager
+            ->method('flush')
+            ->willThrowException($this->createStub(UniqueConstraintViolationException::class));
+
+        $this->expectException(AutorDuplicadoException::class);
+
+        $this->autorService->criar('Machado de Assis');
     }
 }
