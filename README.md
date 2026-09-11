@@ -93,23 +93,27 @@ docker compose exec app php bin/phpunit
 
 ### Via servidor local
 
-```bash
-php bin/phpunit                    # todos os testes
-php bin/phpunit tests/Service      # unitários
-php bin/phpunit tests/Controller   # funcionais
-```
+Antes de rodar pela primeira vez, configure o banco de teste. Os testes funcionais usam um banco separado (`acervo_livros_test`).
 
-Os testes funcionais usam um banco separado (`acervo_livros_test`). Antes de rodar pela primeira vez, configure o `.env.test.local`:
+Configure o `.env.test.local`:
 
 ```dotenv
 DATABASE_URL="postgresql://SEU_USUARIO:SUA_SENHA@127.0.0.1:5432/acervo_livros?serverVersion=16&charset=utf8"
 ```
 
-E crie/migre esse banco:
+Crie e migre esse banco:
 
 ```bash
 php bin/console --env=test doctrine:database:create
 php bin/console --env=test doctrine:migrations:migrate
+```
+
+Agora rode os testes:
+
+```bash
+php bin/phpunit                    # todos os testes
+php bin/phpunit tests/Service      # unitários
+php bin/phpunit tests/Controller   # funcionais
 ```
 
 ## Funcionalidades
