@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use App\Entity\Assunto;
-use App\Entity\Autor;
 use App\Entity\Livro;
 use App\Exception\LivroSemAutorException;
 use App\Exception\LivroValorInvalidoException;
@@ -16,32 +14,9 @@ class LivroService
     ) {
     }
 
-    /**
-     * @param Autor[] $autores
-     * @param Assunto[] $assuntos
-     */
-    public function criar(string $titulo, string $editora, int $edicao, string $anoPublicacao, string $valor, array $autores, array $assuntos = []): Livro {
-        
-        $this->garantirValorValido($valor);
-
-        if (empty($autores)){
-            throw new LivroSemAutorException();
-        }
-
-        $livro = new Livro();
-        $livro->setTitulo($titulo);
-        $livro->setEditora($editora);
-        $livro->setEdicao($edicao);
-        $livro->setAnoPublicacao($anoPublicacao);
-        $livro->setValor($valor);
-
-        foreach ($autores as $autor)
-            $livro->addAutor($autor);
-        
-
-        foreach ($assuntos as $assunto) {
-            $livro->addAssunto($assunto);
-        }
+    public function criar(Livro $livro): Livro
+    {
+        $this->validar($livro);
 
         $this->entityManager->persist($livro);
         $this->entityManager->flush();
@@ -49,26 +24,9 @@ class LivroService
         return $livro;
     }
 
-    /**
-     * @param Autor[] $autores
-     * @param Assunto[] $assuntos
-     */
-    public function atualizar( Livro $livro, string $titulo, string $editora, int $edicao, string $anoPublicacao, string $valor, array $autores, array $assuntos = []): Livro {
-        
-        $this->garantirValorValido($valor);
-
-        if (empty($autores))
-            throw new LivroSemAutorException();
-        
-
-        $livro->setTitulo($titulo);
-        $livro->setEditora($editora);
-        $livro->setEdicao($edicao);
-        $livro->setAnoPublicacao($anoPublicacao);
-        $livro->setValor($valor);
-
-        $this->sincronizarAutores($livro, $autores);
-        $this->sincronizarAssuntos($livro, $assuntos);
+    public function atualizar(Livro $livro): Livro
+    {
+        $this->validar($livro);
 
         $this->entityManager->flush();
 
@@ -81,40 +39,14 @@ class LivroService
         $this->entityManager->flush();
     }
 
-    private function garantirValorValido(string $valor): void
+    private function validar(Livro $livro): void
     {
-        if ((float) $valor <= 0) {
-            throw new LivroValorInvalidoException($valor);
-        }
-    }
-
-    private function sincronizarAutores(Livro $livro, array $autoresNovos): void
-    {
-        foreach ($livro->getAutores() as $autorAtual) {
-            if (!in_array($autorAtual, $autoresNovos, true)) {
-                $livro->removeAutor($autorAtual);
-            }
+        if ((float) $livro->getValor() <= 0) {
+            throw new LivroValorInvalidoException($livro->getValor());
         }
 
-        foreach ($autoresNovos as $autor) {
-            if (!$livro->getAutores()->contains($autor)) {
-                $livro->addAutor($autor);
-            }
-        }
-    }
-
-    private function sincronizarAssuntos(Livro $livro, array $assuntosNovos): void
-    {
-        foreach ($livro->getAssuntos() as $assuntoAtual) {
-            if (!in_array($assuntoAtual, $assuntosNovos, true)) {
-                $livro->removeAssunto($assuntoAtual);
-            }
-        }
-
-        foreach ($assuntosNovos as $assunto) {
-            if (!$livro->getAssuntos()->contains($assunto)) {
-                $livro->addAssunto($assunto);
-            }
+        if ($livro->getAutores()->isEmpty()) {
+            throw new LivroSemAutorException();
         }
     }
 }
