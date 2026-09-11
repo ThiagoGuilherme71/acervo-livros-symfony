@@ -5,7 +5,7 @@ namespace App\Repository;
 use App\Entity\RelatorioLivro;
 use Doctrine\DBAL\Connection;
 
-final class RelatorioLivroRepository
+class RelatorioLivroRepository
 {
     public function __construct(
         private readonly Connection $connection,

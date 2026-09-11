@@ -48,10 +48,7 @@ class ExceptionListener
         $session = $this->requestStack->getSession();
         $session->getFlashBag()->add('error', $mensagem);
 
-        $rotaAnterior = $event->getRequest()->headers->get('referer');
-        $urlRedirecionamento = $rotaAnterior ?? $this->router->generate('app_home');
-
-        $event->setResponse(new RedirectResponse($urlRedirecionamento));
+        $event->setResponse(new RedirectResponse($this->router->generate('app_home')));
     }
 
     private function resolverMensagem(\Throwable $exception): ?string
