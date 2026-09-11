@@ -27,6 +27,7 @@ Requer Docker e Docker Compose instalados.
 git clone https://github.com/ThiagoGuilherme71/acervo-livros-symfony.git
 cd acervo-livros-symfony
 docker compose up -d --build
+(em caso de erro de permissão deve-se adicionar o sudo 'sudo docker compose up -d --build')
 ```
 
 O container da aplicação cria o banco e roda as migrations automaticamente ao iniciar (via `entrypoint.sh`). A aplicação fica disponível em `http://localhost:8089`.

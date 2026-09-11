@@ -14,7 +14,9 @@
 </head>
 <body>
     <h1>Relatório de Acervo / Livros por Autor</h1>
-
+    <p style="color: #666; font-size: 11px;">
+        Gerado em {{ geradoEm|date('d/m/Y H:i') }}. Total geral: R$ {{ totalGeral|number_format(2, ',', '.') }}
+    </p>
     {% for autorId, autor in agrupadoPorAutor %}
         <h2>{{ autor.nome }}</h2>
         <table>
@@ -41,6 +43,9 @@
                 {% endfor %}
             </tbody>
         </table>
+        <p style="text-align: right; font-weight: bold; margin-top: -4px;">
+            Subtotal: R$ {{ autor.subtotal|number_format(2, ',', '.') }}
+        </p>
     {% endfor %}
 </body>
 </html>
