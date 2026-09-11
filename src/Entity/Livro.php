@@ -36,8 +36,8 @@ class Livro
      */
     #[ORM\ManyToMany(targetEntity: Autor::class, inversedBy: 'livros')]
     #[ORM\JoinTable(name: 'livro_autor')]
-    #[ORM\JoinColumn(name: 'livro_codl', referencedColumnName: 'codl')]
-    #[ORM\InverseJoinColumn(name: 'autor_codau', referencedColumnName: 'codau')]
+    #[ORM\JoinColumn(name: 'livro_codl', referencedColumnName: 'codl', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'autor_codau', referencedColumnName: 'codau', onDelete: 'CASCADE')]
     private Collection $autores;
 
 
@@ -46,8 +46,8 @@ class Livro
      */
     #[ORM\ManyToMany(targetEntity: Assunto::class, inversedBy: 'livros')]
     #[ORM\JoinTable(name: 'livro_assunto')]
-    #[ORM\JoinColumn(name: 'livro_codl', referencedColumnName: 'codl')]
-    #[ORM\InverseJoinColumn(name: 'assunto_codas', referencedColumnName: 'codas')]
+    #[ORM\JoinColumn(name: 'livro_codl', referencedColumnName: 'codl', onDelete: 'CASCADE')]
+    #[ORM\InverseJoinColumn(name: 'assunto_codas', referencedColumnName: 'codas', onDelete: 'CASCADE')]
     private Collection $assuntos;
 
     public function __construct()
