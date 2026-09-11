@@ -16,6 +16,15 @@ class AutorRepository extends ServiceEntityRepository
         parent::__construct($registry, Autor::class);
     }
 
+    public function findOneByNomeIgnorandoCaixa(string $nome): ?Autor
+    {
+        return $this->createQueryBuilder('a')
+            ->where('LOWER(a.nome) = LOWER(:nome)')
+            ->setParameter('nome', $nome)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    
     //    /**
     //     * @return Autor[] Returns an array of Autor objects
     //     */

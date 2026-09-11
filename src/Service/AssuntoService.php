@@ -62,7 +62,7 @@ class AssuntoService
 
     private function garantirDescricaoUnica(string $descricao, ?Assunto $assuntoAtual = null): void
     {
-        $existente = $this->assuntoRepository->findOneBy(['descricao' => $descricao]);
+        $existente = $this->assuntoRepository->findOneByDescricaoIgnorandoCaixa($descricao);
 
         if ($existente !== null && $existente !== $assuntoAtual) {
             throw new AssuntoDuplicadoException($descricao);
