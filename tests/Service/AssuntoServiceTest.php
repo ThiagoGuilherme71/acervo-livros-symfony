@@ -32,8 +32,8 @@ class AssuntoServiceTest extends TestCase
     public function testCriarComDescricaoUnicaDevePersistirERetornarAssunto(): void
     {
         $this->assuntoRepository
-            ->method('findOneBy')
-            ->with(['descricao' => 'Ficção'])
+            ->method('findOneByDescricaoIgnorandoCaixa')
+            ->with('Ficção')
             ->willReturn(null);
 
         $this->entityManager->expects($this->once())->method('persist');
@@ -50,7 +50,7 @@ class AssuntoServiceTest extends TestCase
         $assuntoExistente->setDescricao('Ficção');
 
         $this->assuntoRepository
-            ->method('findOneBy')
+            ->method('findOneByDescricaoIgnorandoCaixa')
             ->willReturn($assuntoExistente);
 
         $this->entityManager->expects($this->never())->method('persist');
@@ -66,7 +66,7 @@ class AssuntoServiceTest extends TestCase
         $assunto->setDescricao('Ficção');
 
         $this->assuntoRepository
-            ->method('findOneBy')
+            ->method('findOneByDescricaoIgnorandoCaixa')
             ->willReturn($assunto);
 
         $this->entityManager->expects($this->once())->method('flush');
@@ -85,7 +85,7 @@ class AssuntoServiceTest extends TestCase
         $outroAssunto->setDescricao('Terror');
 
         $this->assuntoRepository
-            ->method('findOneBy')
+            ->method('findOneByDescricaoIgnorandoCaixa')
             ->willReturn($outroAssunto);
 
         $this->expectException(AssuntoDuplicadoException::class);
@@ -122,7 +122,7 @@ class AssuntoServiceTest extends TestCase
     public function testCriarComViolacaoDeUnicidadeNoBancoDeveLancarExcecaoDeDominio(): void
     {
         $this->assuntoRepository
-            ->method('findOneBy')
+            ->method('findOneByDescricaoIgnorandoCaixa')
             ->willReturn(null);
 
         $this->entityManager

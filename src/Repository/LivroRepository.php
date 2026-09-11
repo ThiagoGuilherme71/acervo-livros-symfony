@@ -53,4 +53,15 @@ class LivroRepository extends ServiceEntityRepository
             'valorTotal' => (float) $resultado['valorTotal'],
         ];
     }
+
+    public function findAllComAutoresEAssuntos(): array
+    {
+        return $this->createQueryBuilder('l')
+            ->leftJoin('l.autores', 'a')
+            ->addSelect('a') //removendo o lazy loading visando otimizar
+            ->leftJoin('l.assuntos', 's')
+            ->addSelect('s')
+            ->getQuery()
+            ->getResult();
+    }
 }

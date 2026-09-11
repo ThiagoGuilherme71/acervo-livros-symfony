@@ -33,8 +33,8 @@ class AutorServiceTest extends TestCase
     public function testCriarComNomeUnicoDevePersistirERetornarAutor(): void
     {
         $this->autorRepository
-            ->method('findOneBy')
-            ->with(['nome' => 'Machado de Assis'])
+            ->method('findOneByNomeIgnorandoCaixa')
+            ->with('Machado de Assis')
             ->willReturn(null);
 
         $this->entityManager->expects($this->once())->method('persist');
@@ -51,7 +51,7 @@ class AutorServiceTest extends TestCase
         $autorExistente->setNome('Machado de Assis');
 
         $this->autorRepository
-            ->method('findOneBy')
+            ->method('findOneByNomeIgnorandoCaixa')
             ->willReturn($autorExistente);
 
         $this->entityManager->expects($this->never())->method('persist');
@@ -67,7 +67,7 @@ class AutorServiceTest extends TestCase
         $autor->setNome('Machado de Assis');
 
         $this->autorRepository
-            ->method('findOneBy')
+            ->method('findOneByNomeIgnorandoCaixa')
             ->willReturn($autor);
 
         $this->entityManager->expects($this->once())->method('flush');
@@ -86,7 +86,7 @@ class AutorServiceTest extends TestCase
         $outroAutor->setNome('Clarice Lispector');
 
         $this->autorRepository
-            ->method('findOneBy')
+            ->method('findOneByNomeIgnorandoCaixa')
             ->willReturn($outroAutor);
 
         $this->expectException(AutorDuplicadoException::class);
@@ -123,7 +123,7 @@ class AutorServiceTest extends TestCase
     public function testCriarComViolacaoDeUnicidadeNoBancoDeveLancarExcecaoDeDominio(): void
     {
         $this->autorRepository
-            ->method('findOneBy')
+            ->method('findOneByNomeIgnorandoCaixa')
             ->willReturn(null);
 
         $this->entityManager

@@ -62,7 +62,7 @@ class AutorService
 
     private function garantirNomeUnico(string $nome, ?Autor $autorAtual = null): void
     {
-        $existente = $this->autorRepository->findOneBy(['nome' => $nome]);
+        $existente = $this->autorRepository->findOneByNomeIgnorandoCaixa($nome);
 
         if ($existente !== null && $existente !== $autorAtual) {
             throw new AutorDuplicadoException($nome);

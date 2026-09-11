@@ -16,6 +16,15 @@ class AssuntoRepository extends ServiceEntityRepository
         parent::__construct($registry, Assunto::class);
     }
 
+    public function findOneByDescricaoIgnorandoCaixa(string $descricao): ?Assunto
+    {
+        return $this->createQueryBuilder('a')
+            ->where('LOWER(a.descricao) = LOWER(:descricao)')
+            ->setParameter('descricao', $descricao)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     //    /**
     //     * @return Assunto[] Returns an array of Assunto objects
     //     */
