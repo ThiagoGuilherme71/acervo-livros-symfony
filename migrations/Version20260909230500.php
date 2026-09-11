@@ -25,7 +25,7 @@ final class Version20260909230500 extends AbstractMigration
                 l.titulo AS livro_titulo,
                 l.editora AS livro_editora,
                 l.edicao AS livro_edicao,
-                l.ano_publicacao AS livro_ano_publicacao,
+                l.anopublicacao AS livro_ano_publicacao,
                 l.valor AS livro_valor,
                 ass.codas AS assunto_id,
                 ass.descricao AS assunto_descricao

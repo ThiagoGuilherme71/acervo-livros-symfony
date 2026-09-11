@@ -25,7 +25,7 @@ class Livro
     #[ORM\Column]
     private ?int $edicao = null;
 
-    #[ORM\Column(length: 4)]
+    #[ORM\Column(name: 'anopublicacao', length: 4)]
     private ?string $anoPublicacao = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
